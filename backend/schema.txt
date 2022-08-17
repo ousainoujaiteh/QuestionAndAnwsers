@@ -1,0 +1,83 @@
+SCHEMA DESIGN
+
+Questions
+    question
+
+Choices
+    question_id
+    name
+    is_correct['YES','NO']
+
+Exam
+    user_id
+    total_questions
+    duration
+    status
+    completion_status
+
+ExamAnswers
+    exam_id
+    question_id
+    choice_id
+    user_id
+
+
+
+SQL SCRIPTS
+
+CREATE DATABASE question_and_answers;
+
+CREATE TABLE `question_and_answers`.`questions`(
+     `id` INT NOT NULL AUTO_INCREMENT , 
+    `question` VARCHAR(255) NOT NULL ,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+     PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+CREATE TABLE `question_and_answers`.`choices` (
+    `id` INT NOT NULL AUTO_INCREMENT , 
+    `question_id` INT NOT NULL ,
+    `name` VARCHAR(255) NOT NULL ,
+    `is_correct` ENUM('NO','YES') NOT NULL , 
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    PRIMARY KEY (`id`)) 
+ENGINE = InnoDB;
+
+
+CREATE TABLE `question_and_answers`.`users` ( 
+    `id` INT NOT NULL AUTO_INCREMENT , 
+    `username` VARCHAR(255) NOT NULL ,
+    `password` VARCHAR(255) NOT NULL,
+    `first_name` VARCHAR(255) NOT NULL , 
+    `last_name` VARCHAR(255) NOT NULL , 
+    `user_type` ENUM('USER','ADMIN') NOT NULL DEFAULT 'USER',
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+    PRIMARY KEY (`id`)) 
+ENGINE = InnoDB;
+
+CREATE TABLE `question_and_answers`.`exams` ( 
+    `id` INT NOT NULL AUTO_INCREMENT ,
+    `user_id` INT NOT NULL ,
+    `total_questions` INT NOT NULL , 
+    `duration` INT NOT NULL , 
+    `status` ENUM('ACTIVE','IN-ACTIVE') NOT NULL DEFAULT 'ACTIVE' ,
+    `completion_status` ENUM('PENDING','DONE') NOT NULL DEFAULT 'PENDING' ,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    PRIMARY KEY (`id`)) 
+ENGINE = InnoDB;
+
+
+CREATE TABLE `question_and_answers`.`exam_answers` ( 
+    `id` INT NULL , `exam_id` INT NOT NULL , 
+    `question_id` INT NOT NULL , 
+    `choice_id` INT NOT NULL , 
+    `user_id` INT NOT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`))
+ENGINE = InnoDB;
